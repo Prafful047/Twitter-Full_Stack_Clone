@@ -23,9 +23,12 @@ import {
 } from "@mui/material";
 import CustomLink from "./CustomLink";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
+import PremiumButton from "./PremiumButton";
+import PremiumModal from "./Premium/PremiumModal";
 
 const Sidebar = ({ handleLogout, user }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isPremiumModalOpen, setPremiumModalOpen] = useState(false);
   const openMenu = Boolean(anchorEl);
   const loggedInUser = useLoggedInUser();
 
@@ -43,13 +46,24 @@ const Sidebar = ({ handleLogout, user }) => {
     setAnchorEl(null);
   };
 
+  const handlePremiumClick = () => {
+    setPremiumModalOpen(true);
+  }
+
+  const handlePremiumClose = () => {
+    setPremiumModalOpen(false);
+  }
+
   // console.log(loggedInUser[0][0].profileImage);
 
   const result = user[0]?.email?.split("@")[0];
 
   return (
     <div className="sidebar">
-      <TwitterIcon className="sidebar_twitterIcon" />
+      <div className="icon-premium">
+        <TwitterIcon className="sidebar_twitterIcon" />
+        <PremiumButton onClick={handlePremiumClick}/>
+      </div>
       <CustomLink to="/home/feed">
         <SidebarOptions active Icon={HomeIcon} text="Home" />
       </CustomLink>
@@ -127,6 +141,7 @@ const Sidebar = ({ handleLogout, user }) => {
           <MenuItem onClick={handleLogout}>Log out @AwadhiyaPrafful</MenuItem>
         </Menu>
       </div>
+      <PremiumModal open={isPremiumModalOpen} handleClose={handlePremiumClose} />
     </div>
   );
 };

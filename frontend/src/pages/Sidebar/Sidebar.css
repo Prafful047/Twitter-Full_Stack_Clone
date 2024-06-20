@@ -19,6 +19,17 @@
     margin-bottom: 10px;
 }
 
+.premium-button {
+    background-color: #9a8822; /* Gold color for premium */
+    color: white;
+}
+
+.icon-premium {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
 .sidebar_tweet {
     background-color:#50b7f5 !important;
     border: none !important;
