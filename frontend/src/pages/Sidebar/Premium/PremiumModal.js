@@ -1,9 +1,41 @@
-// PremiumModal.js
 import React from 'react';
 import { Modal, Box, Typography, Button } from '@mui/material';
+import { loadStripe } from '@stripe/stripe-js';
 import './PremiumModal.css';
 
-const PremiumModal = ({ open, handleClose }) => {
+const stripePromise = loadStripe('pk_test_51PR7PaABUckyKyxTy85soV4fuya7fb7hXjdI2AEb2cjzbdoHSMoqYUMsmmX5NmyifdXWY2oEbfdiCY8E76esWvVh00NS7SADFt');
+
+const PremiumModal = ({ open, handleClose, userEmail }) => {
+  const handlePlanSelection = async (priceId) => {
+    try {
+      const stripe = await stripePromise;
+
+      const response = await fetch('http://localhost:5000/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ priceId, email: userEmail }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const session = await response.json();
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) {
+        console.error(result.error.message);
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+    }
+  };
+
   return (
     <Modal
       open={open}
@@ -27,14 +59,13 @@ const PremiumModal = ({ open, handleClose }) => {
               Billed monthly
             </Typography>
             <Typography variant="h6" color="primary" className="plan-price">
-              ₹499
+              ₹149
             </Typography>
             <ul>
               <li>Unlimited tweets</li>
-              <li>Ad-free experience</li>
               <li>Priority support</li>
             </ul>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={() => handlePlanSelection('price_1PRqIKABUckyKyxTHKeA2luK')}>
               Subscribe
             </Button>
           </Box>
@@ -50,11 +81,10 @@ const PremiumModal = ({ open, handleClose }) => {
             </Typography>
             <ul>
               <li>Unlimited tweets</li>
-              <li>Ad-free experience</li>
               <li>Priority support</li>
               <li>Exclusive features</li>
             </ul>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={() => handlePlanSelection('price_1PRqJoABUckyKyxTeC3hyqAs')}>
               Subscribe
             </Button>
           </Box>

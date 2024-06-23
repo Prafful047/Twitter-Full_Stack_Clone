@@ -14,6 +14,8 @@ import Bookmarks from './pages/Bookmarks/Bookmarks';
 import Lists from './pages/Lists/Lists';
 import Profile from './pages/Profile/Profile';
 import More from './pages/More/More';
+import SuccessPage from './pages/Sidebar/Premium/SuccessPage';
+import CancelPage from './pages/Sidebar/Premium/Cancelpage';
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
                   <Route path='more' element={<More />} />
 
                 </Route>
+                <Route path='/success' element={<SuccessPage />} />
+                <Route path='/cancel' element={<CancelPage />} />
                 <Route path='/login' element={<Login/>} />
                 <Route path='/signup' element={<SignUp/>} />
                 <Route path='/page-loading' element={<PageLoading/>} />

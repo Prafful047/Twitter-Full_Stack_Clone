@@ -12,6 +12,7 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MoreIcon from "@mui/icons-material/More";
 import DoneIcon from "@mui/icons-material/Done";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { FaCrown } from 'react-icons/fa'
 import {
   Avatar,
   Button,
@@ -32,7 +33,7 @@ const Sidebar = ({ handleLogout, user }) => {
   const openMenu = Boolean(anchorEl);
   const loggedInUser = useLoggedInUser();
 
-  // console.log(loggedInUser[0][0]?.name)
+  // console.log(loggedInUser)
 
   const userProfilePic = loggedInUser[0]?.profileImage
     ? loggedInUser[0]?.profileImage
@@ -54,15 +55,20 @@ const Sidebar = ({ handleLogout, user }) => {
     setPremiumModalOpen(false);
   }
 
-  // console.log(loggedInUser[0][0].profileImage);
+  // console.log(loggedInUser[0][0].subscription);
 
   const result = user[0]?.email?.split("@")[0];
+  // console.log(user);
+
 
   return (
     <div className="sidebar">
       <div className="icon-premium">
         <TwitterIcon className="sidebar_twitterIcon" />
+        {loggedInUser[0][0]?.subscription ? 
+        <FaCrown style={{ color: 'gold', fontSize: '24px' }} /> :  
         <PremiumButton onClick={handlePremiumClick}/>
+        }
       </div>
       <CustomLink to="/home/feed">
         <SidebarOptions active Icon={HomeIcon} text="Home" />
@@ -141,7 +147,7 @@ const Sidebar = ({ handleLogout, user }) => {
           <MenuItem onClick={handleLogout}>Log out @AwadhiyaPrafful</MenuItem>
         </Menu>
       </div>
-      <PremiumModal open={isPremiumModalOpen} handleClose={handlePremiumClose} />
+      <PremiumModal open={isPremiumModalOpen} handleClose={handlePremiumClose} userEmail={user[0]?.email} />
     </div>
   );
 };
